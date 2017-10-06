@@ -14,7 +14,7 @@ for line in lines:
     source_path = line[0]
     filename = source_path.split('/')[-1]
     current_path = 'data/IMG/' + filename
-    images = cv2.imread(current_path)
+    image = cv2.imread(current_path)
     images.append(image)
     measurement = float(line[3])
     measurements.append(measurement)
