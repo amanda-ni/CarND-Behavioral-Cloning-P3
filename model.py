@@ -6,6 +6,7 @@ from generator import generator, get_manifest
 from sklearn.model_selection import train_test_split
 from keras.models import Sequential
 from keras.layers import Flatten, Dense, Lambda
+from keras.layers.pooling import MaxPooling2D
 from keras.layers.convolutional import Conv2D
 
 # read the data and file manifest from csv log
@@ -20,9 +21,14 @@ ch, row, col = 3, 160, 320  # Trimmed image format
 # keras neural network
 model = Sequential()
 model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
-model.add(Conv2D(8, 8, 8, subsample=(4,4), border_mode='same',
+model.add(Conv2D(8, 8, 8, subsample=(2,2), border_mode='valid',
+                activation='relu'))
+model.add(MaxPooling2D())
+model.add(Conv2D(6, 5, 5, border_mode='valid',
                 activation='relu'))
 model.add(Flatten())
+model.add(Dense(128))
+model.add(Dense(64))
 model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
