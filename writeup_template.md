@@ -70,7 +70,9 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 
 ####4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road. In actuality, I had a function called `random_augmentation`, which randomly chose the camera perspective (left,, right, or center). This is probably a matter of semantics, since indeed, data *was* collected on either side of the car, but for my purposes, I simply called a single point in time a sample. This means that through a single epoch, each point in time would only be used once. The code to do so is documented in my `generator.py` code, which is the off-GPU code that I used to prepare the data before handing it to Keras.
+
+
 
 For details about how I created the training data, see the next section. 
 

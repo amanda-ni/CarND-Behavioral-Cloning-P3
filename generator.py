@@ -13,8 +13,28 @@ def get_manifest(filename):
     # Omit the first line as it has no data
     return samples[1:]
 
-# Data augmentation
+# Data augmentation and/or selection
 def random_augment(batch_sample, flip_prob=0.5, lcr_prob=None):
+'''
+Data augmentation and/or selection
+
+Input:
+  - batch_sample: This is the line in the CSV file that has
+                  the images (left, center, right), and the
+                  truth data (angle, acceleration, etc.)
+  - flip_prob: This is the probability that we'll flip the image.
+               The default setting is 0.5.
+  - lcr_prob: This is the probability of choosing any one of
+              the three cameras.
+              Default is None, meaning uniformly picking.
+
+Output:
+  - image: The augmented image
+  - angle: the driving angle (-0.15 for right camera, +0.15 for
+           left camera)
+'''
+
+
 
     # Choose the camera type
     choice = np.random.choice(3, lcr_prob)
@@ -33,7 +53,9 @@ def random_augment(batch_sample, flip_prob=0.5, lcr_prob=None):
 
 # Generator to feed the neural network
 def generator(samples, batch_size=32):
-
+'''
+To avoid having to load in all the images
+'''
     num_samples = len(samples)
     while 1: # Loop forever so the generator never terminates
         sklearn.utils.shuffle(samples)
