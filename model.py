@@ -1,35 +1,30 @@
 import numpy as np
+import os
 import csv
 import cv2
-
-lines = []
-with open('data/driving_log.csv') as csvfile:
-    reader = csv.reader(csvfile)
-    for line in reader:
-        lines.append(line)
-
-images = []
-measurements = []
-for line in lines[1:]:
-    source_path = line[0]
-    filename = source_path.split('/')[-1]
-    current_path = 'data/IMG/' + filename
-    image = cv2.imread(current_path)
-    images.append(image)
-    measurement = float(line[3])
-    measurements.append(measurement)
-
-X_train = np.array(images)
-y_train = np.array(measurements)
-
+from generator import generator, get_manifest
+from sklearn.model_selection import train_test_split
 from keras.models import Sequential
-from keras.layers import Flatten, Dense
+from keras.layers import Flatten, Dense, Lambda
 
+# read the data and file manifest from csv log
+samples = get_manifest('./data/sample/driving_log.csv')
+train_samples, validation_samples = train_test_split(samples, test_size=0.2)
+
+# compile and train the model using the generator function
+train_generator = generator(train_samples, batch_size=32)
+validation_generator = generator(validation_samples, batch_size=32)
+ch, row, col = 3, 160, 320  # Trimmed image format
+
+# keras neural network
 model = Sequential()
-model.add(Flatten(input_shape=(160,320,3)))
+model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(row,col,ch)))
+model.add(Flatten(input_shape=(ch,row,col)))
 model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
-model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=7)
+model.fit_generator(train_generator, samples_per_epoch= \
+          len(train_samples), validation_data=validation_generator, \
+          nb_val_samples=len(validation_samples), nb_epoch=3)
 
 model.save('model.h5')
