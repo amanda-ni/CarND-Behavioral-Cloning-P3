@@ -6,6 +6,7 @@ from generator import generator, get_manifest
 from sklearn.model_selection import train_test_split
 from keras.models import Sequential
 from keras.layers import Flatten, Dense, Lambda
+from keras.layers.convolutional import Conv2D
 
 # read the data and file manifest from csv log
 samples = get_manifest('./data/sample/driving_log.csv')
@@ -18,8 +19,10 @@ ch, row, col = 3, 160, 320  # Trimmed image format
 
 # keras neural network
 model = Sequential()
-model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(row,col,ch)))
-model.add(Flatten(input_shape=(ch,row,col)))
+model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
+model.add(Conv2D(8, 8, 8, subsample=(4,4), border_mode='same',
+                activation='relu'))
+model.add(Flatten())
 model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
