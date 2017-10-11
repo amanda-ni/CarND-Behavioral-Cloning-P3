@@ -10,7 +10,7 @@ from keras.layers.pooling import MaxPooling2D
 from keras.layers.convolutional import Conv2D
 
 # read the data and file manifest from csv log
-samples = get_manifest('./data/sample/driving_log.csv')
+samples = get_manifest('./data/collection-1/driving_log.csv')
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
 
 # compile and train the model using the generator function
