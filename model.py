@@ -16,16 +16,14 @@ train_samples, validation_samples = train_test_split(samples, test_size=0.2)
 # compile and train the model using the generator function
 train_generator = generator(train_samples, batch_size=32)
 validation_generator = generator(validation_samples, batch_size=32)
-ch, row, col = 3, 160, 320  # Trimmed image format
 
 # keras neural network
 model = Sequential()
 model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
-model.add(Conv2D(8, 8, 8, subsample=(2,2), border_mode='valid',
-                activation='relu'))
+model.add(Conv2D(8, 8, 8, subsample=(2,2), border_mode='valid', activation='relu'))
 model.add(MaxPooling2D())
-model.add(Conv2D(6, 5, 5, border_mode='valid',
-                activation='relu'))
+model.add(Conv2D(6, 5, 5, border_mode='valid', activation='relu'))
+model.add(MaxPooling2D())
 model.add(Flatten())
 model.add(Dense(128))
 model.add(Dense(64))

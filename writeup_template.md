@@ -1,19 +1,13 @@
 #**Behavioral Cloning** 
 
-##Writeup Template
-
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
-**Behavioral Cloning Project**
 
 The goals / steps of this project are the following:
-* Use the simulator to collect data of good driving behavior
-* Build, a convolution neural network in Keras that predicts steering angles from images
-* Train and validate the model with a training and validation set
-* Test that the model successfully drives around track one without leaving the road
-* Summarize the results with a written report
+
+1. Use the simulator to collect data of good driving behavior
+2. Build, a convolution neural network in Keras that predicts steering angles from images
+3. Train and validate the model with a training and validation set
+4. Test that the model successfully drives around track one without leaving the road
+5. Summarize the results with a written report
 
 
 [//]: # (Image References)
@@ -35,6 +29,11 @@ The goals / steps of this project are the following:
 ####1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 My project includes the following files:
+
+* generator.py containing the ingestion of data. This assumes:
+   * the metadata and labels are stored in a comma separated file `filename.csv`,
+   * the CSV file has labels and the paths to the images,
+   * iterators to be passed to the training module
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
@@ -42,7 +41,7 @@ My project includes the following files:
 
 ####2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
-```sh
+```
 python drive.py model.h5
 ```
 
@@ -72,7 +71,7 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 
 Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road. In actuality, I had a function called `random_augmentation`, which randomly chose the camera perspective (left,, right, or center). This is probably a matter of semantics, since indeed, data *was* collected on either side of the car, but for my purposes, I simply called a single point in time a sample. This means that through a single epoch, each point in time would only be used once. The code to do so is documented in my `generator.py` code, which is the off-GPU code that I used to prepare the data before handing it to Keras.
 
-
+Additionally, I drove the car both clockwise and counter-clockwise on the track so that the car effectively sees an entirely new track, which can be thought of as a new dataset.
 
 For details about how I created the training data, see the next section. 
 
@@ -123,9 +122,7 @@ To augment the data sat, I also flipped images and angles thinking that this wou
 
 Etc ....
 
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+After the collection process, I had 24k number of data points from the original "sample" collection, and additional 44k samples from my own collection. I then preprocessed this data by mean-shifting and variance normalizing the image.
 
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
-
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I finally randomly shuffled the data set and put 20% of the data into a validation set, while training on the remaining 80% of the data. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
