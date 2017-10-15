@@ -8,9 +8,19 @@ from keras.models import Sequential
 from keras.layers import Flatten, Dense, Lambda
 from keras.layers.pooling import MaxPooling2D
 from keras.layers.convolutional import Conv2D
+import sys
+
+# parse arguments
+if len(sys.argv)<2:
+    driving_log='./data/combo-log.csv'
+    print('Driving log (CSV) is '+driving_log)
+elif len(sys.argv)==2:
+    driving_log=sys.argv[1]
+else:
+    sys.exit()
 
 # read the data and file manifest from csv log
-samples = get_manifest('./data/collection-1/driving_log.csv')
+samples = get_manifest(driving_log)
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
 
 # compile and train the model using the generator function
