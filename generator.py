@@ -48,7 +48,7 @@ def random_augment(batch_sample, flip_prob=0.5, lcr_prob=None):
 
     # Read the image and add offset to direction 
     image = cv2.imread(name)
-    angle = float(batch_sample[3])+[0.0,0.35,-.15][choice]
+    angle = float(batch_sample[3])+[0.0,0.25,-.25][choice]
 
     # Flip image
     if np.random.binomial(1,flip_prob):
