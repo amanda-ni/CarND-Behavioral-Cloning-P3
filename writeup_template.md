@@ -9,6 +9,30 @@ The goals / steps of this project are the following:
 4. Test that the model successfully drives around track one without leaving the road
 5. Summarize the results with a written report
 
+## Installation Notes
+
+
+I decided to try to install the Docker container via the instructions from CarND-Term1-Starter-Kit this time for educational and informational reasons. This turned out to be a nontrivial effort, and things didn't work right out of the box. For anyone who's interested in learning about how to do it, here are my trials and tribulations.
+
+The basic problem is that cuDNN v5.1 is not installed as a library. Because of that, you're likely to run into something like:
+
+`
+tensorflow/stream_executor/cuda/cuda_dnn.cc:221] Check failed: s.ok() could not find cudnnCreate in cudnn DSO; dlerror: /root/miniconda3/envs/carnd-term1/lib/python3.5/site-packages/tensorflow/python/_pywrap_tensorflow.so: undefined symbol: cudnnCreate Aborted
+`
+
+A quick note about what *didn't work*. Scouring through online forums, I came across the note to replace the first line (where the container inherits from) that currently looks like:
+
+```
+FROM nvidia/cuda:8.0-cudnn5-runtime-ubuntu16.04
+```
+
+to
+
+```
+FROM gcr.io/tensorflow/tensorflow.
+```
+
+Since we're using NVIDIA's cuDNN v5.1, I would have thought.
 
 [//]: # (Image References)
 
