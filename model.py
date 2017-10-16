@@ -49,4 +49,4 @@ history = model.fit_generator(train_generator, samples_per_epoch= \
                   nb_val_samples=len(validation_samples), nb_epoch=1)
 
 model.save('model.h5')
-pickle.dump(history, open('epoch-losses.p', "wb"))
+pickle.dump(history.history, open('epoch-losses.p', "wb"))
