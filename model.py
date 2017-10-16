@@ -8,7 +8,9 @@ from keras.models import Sequential
 from keras.layers import Flatten, Dense, Lambda
 from keras.layers.pooling import MaxPooling2D
 from keras.layers.convolutional import Conv2D
+from keras.optimizers import Adam
 import sys
+import pickle
 
 # parse arguments
 if len(sys.argv)<2:
@@ -41,9 +43,10 @@ model.add(Dense(128, activation='relu'))
 model.add(Dense(64, activation='relu'))
 model.add(Dense(1, activation='tanh'))
 
-model.compile(loss='mse', optimizer='adam')
+model.compile(loss='mse', optimizer=Adam(lr=0.0001))
 history = model.fit_generator(train_generator, samples_per_epoch= \
                   len(train_samples), validation_data=validation_generator, \
                   nb_val_samples=len(validation_samples), nb_epoch=50)
 
 model.save('model.h5')
+pickle.dump(history, open('epoch-losses.p', "wb"))
