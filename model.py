@@ -31,7 +31,7 @@ validation_generator = generator(validation_samples, batch_size=32)
 
 # keras neural network
 model = Sequential()
-model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(110,320,3)))
+model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
 model.add(Conv2D(16, 8, 8, subsample=(2,2), border_mode='valid', activation='relu'))
 model.add(MaxPooling2D())
 model.add(Conv2D(32, 4, 4, subsample=(2,2), border_mode='valid', activation='relu'))
