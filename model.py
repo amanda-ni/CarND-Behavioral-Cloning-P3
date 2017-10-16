@@ -30,11 +30,11 @@ validation_generator = generator(validation_samples, batch_size=32)
 # keras neural network
 model = Sequential()
 model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
-model.add(Conv2D(8, 8, 8, subsample=(2,2), border_mode='valid', activation='relu'))
+model.add(Conv2D(16, 8, 8, subsample=(2,2), border_mode='valid', activation='relu'))
 model.add(MaxPooling2D())
-model.add(Conv2D(8, 4, 4, subsample=(2,2), border_mode='valid', activation='relu'))
+model.add(Conv2D(32, 4, 4, subsample=(2,2), border_mode='valid', activation='relu'))
 model.add(MaxPooling2D())
-model.add(Conv2D(6, 5, 5, border_mode='valid', activation='relu'))
+model.add(Conv2D(24, 5, 5, border_mode='valid', activation='relu'))
 model.add(MaxPooling2D())
 model.add(Flatten())
 model.add(Dense(128, activation='relu'))
@@ -44,6 +44,6 @@ model.add(Dense(1, activation='tanh'))
 model.compile(loss='mse', optimizer='adam')
 model.fit_generator(train_generator, samples_per_epoch= \
           len(train_samples), validation_data=validation_generator, \
-          nb_val_samples=len(validation_samples), nb_epoch=8)
+          nb_val_samples=len(validation_samples), nb_epoch=20)
 
 model.save('model.h5')
