@@ -9,8 +9,18 @@ The goals / steps of this project are the following:
 4. Test that the model successfully drives around track one without leaving the road
 5. Summarize the results with a written report
 
-## Installation Notes
+## Installation and Implementation Notes
 
+
+### Running `mac_sim.app`
+
+I kept on getting errors after downloading the `mac_sim.app` files. The error message wasn't too descript. It ended up being, and this was verified over a couple of laptops, that we needed to update the permissions on the application. So, after downloading and unzipping, a directory called `mac_sim.app/` was created. Simply type
+
+`chmod -R u+x mac_sim.app`
+
+And things should be fixed.
+
+### Docker Container
 
 I decided to try to install the Docker container via the instructions from CarND-Term1-Starter-Kit this time for educational and informational reasons. This turned out to be a nontrivial effort, and things didn't work right out of the box. For anyone who's interested in learning about how to do it, here are my trials and tribulations.
 
@@ -46,12 +56,12 @@ In the end, going to NVIDIA and getting the libraries was the right answer, and 
 [image7]: ./examples/placeholder_small.png "Flipped Image"
 
 ## Rubric Points
-###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
+### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
 ---
-###Files Submitted & Code Quality
+### Files Submitted & Code Quality
 
-####1. Submission includes all required files and can be used to run the simulator in autonomous mode
+#### 1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 My project includes the following files:
 
@@ -64,35 +74,35 @@ My project includes the following files:
 * model.h5 containing a trained convolution neural network 
 * writeup_report.md or writeup_report.pdf summarizing the results
 
-####2. Submission includes functional code
+#### 2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
 ```
 python drive.py model.h5
 ```
 
-####3. Submission code is usable and readable
+#### 3. Submission code is usable and readable
 
 The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
-###Model Architecture and Training Strategy
+### Model Architecture and Training Strategy
 
-####1. An appropriate model architecture has been employed
+#### 1. An appropriate model architecture has been employed
 
 My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
 
 The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
 
-####2. Attempts to reduce overfitting in the model
+#### 2. Attempts to reduce overfitting in the model
 
 The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
 
 The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
-####3. Model parameter tuning
+#### 3. Model parameter tuning
 
 The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
 
-####4. Appropriate training data
+#### 4. Appropriate training data
 
 Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road. In actuality, I had a function called `random_augmentation`, which randomly chose the camera perspective (left,, right, or center). This is probably a matter of semantics, since indeed, data *was* collected on either side of the car, but for my purposes, I simply called a single point in time a sample. This means that through a single epoch, each point in time would only be used once. The code to do so is documented in my `generator.py` code, which is the off-GPU code that I used to prepare the data before handing it to Keras.
 
@@ -100,9 +110,9 @@ Additionally, I drove the car both clockwise and counter-clockwise on the track 
 
 For details about how I created the training data, see the next section. 
 
-###Model Architecture and Training Strategy
+### Model Architecture and Training Strategy
 
-####1. Solution Design Approach
+#### 1. Solution Design Approach
 
 The overall strategy for deriving a model architecture was to ...
 
@@ -118,7 +128,7 @@ The final step was to run the simulator to see how well the car was driving arou
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
-####2. Final Model Architecture
+#### 2. Final Model Architecture
 
 The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
 
@@ -126,7 +136,7 @@ Here is a visualization of the architecture (note: visualizing the architecture 
 
 ![alt text][image1]
 
-####3. Creation of the Training Set & Training Process
+#### 3. Creation of the Training Set & Training Process
 
 To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
 
