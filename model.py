@@ -5,7 +5,7 @@ import cv2
 from generator import generator, get_manifest
 from sklearn.model_selection import train_test_split
 from keras.models import Sequential
-from keras.layers import Flatten, Dense, Lambda
+from keras.layers import Flatten, Dense, Lambda, Dropout
 from keras.layers.pooling import MaxPooling2D
 from keras.layers.convolutional import Conv2D
 from keras.optimizers import Adam
@@ -40,7 +40,9 @@ model.add(Conv2D(24, 5, 5, border_mode='valid', activation='relu'))
 model.add(MaxPooling2D())
 model.add(Flatten())
 model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
 model.add(Dense(64, activation='relu'))
+model.add(Dropout(0.5))
 # model.add(Dense(1, activation='tanh'))
 model.add(Dense(1, activation=None))
 
