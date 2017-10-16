@@ -37,9 +37,9 @@ model.add(MaxPooling2D())
 model.add(Conv2D(6, 5, 5, border_mode='valid', activation='relu'))
 model.add(MaxPooling2D())
 model.add(Flatten())
-model.add(Dense(128))
-model.add(Dense(64))
-model.add(Dense(1))
+model.add(Dense(128, activation='relu'))
+model.add(Dense(64, activation='relu'))
+model.add(Dense(1, activation='tanh'))
 
 model.compile(loss='mse', optimizer='adam')
 model.fit_generator(train_generator, samples_per_epoch= \
