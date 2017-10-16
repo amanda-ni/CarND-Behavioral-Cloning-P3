@@ -39,7 +39,7 @@ model.add(MaxPooling2D())
 model.add(Flatten())
 model.add(Dense(128, activation='relu'))
 model.add(Dense(64, activation='relu'))
-model.add(Dense(1, activation=None))
+model.add(Dense(1, activation='tanh'))
 
 model.compile(loss='mse', optimizer='adam')
 history = model.fit_generator(train_generator, samples_per_epoch= \
