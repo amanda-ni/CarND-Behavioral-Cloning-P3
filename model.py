@@ -39,11 +39,11 @@ model.add(MaxPooling2D())
 model.add(Flatten())
 model.add(Dense(128, activation='relu'))
 model.add(Dense(64, activation='relu'))
-model.add(Dense(1, activation='tanh'))
+model.add(Dense(1, activation=None))
 
 model.compile(loss='mse', optimizer='adam')
 history = model.fit_generator(train_generator, samples_per_epoch= \
                   len(train_samples), validation_data=validation_generator, \
-                  nb_val_samples=len(validation_samples), nb_epoch=20)
+                  nb_val_samples=len(validation_samples), nb_epoch=50)
 
 model.save('model.h5')

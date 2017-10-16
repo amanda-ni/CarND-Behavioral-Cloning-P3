@@ -116,7 +116,8 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 | Fully connected		|  Outputs 64 flat neurons|
 | RELU					|						|
 | Fully connected		|  Outputs 1 flat neurons|
-| Tanh			| Mean squared error|
+| Tanh			| Nonlinearity between -1 and 1 |
+| MSE | Mean squared error |
  
 
 Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
