@@ -3,6 +3,10 @@ import csv
 import numpy as np
 import sklearn
 
+def crop_image(image):
+
+    return image[50:,:,:]
+
 # Get the manifest of image filenames
 def get_manifest(filename):
     '''
@@ -47,7 +51,7 @@ def random_augment(batch_sample, flip_prob=0.5, lcr_prob=None):
     name = batch_sample[choice].strip()
 
     # Read the image and add offset to direction 
-    image = cv2.imread(name)
+    image = crop_image( cv2.imread(name) )
     angle = float(batch_sample[3])+[0.0,0.25,-.25][choice]
 
     # Flip image
