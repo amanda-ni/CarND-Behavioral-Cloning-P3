@@ -18,6 +18,9 @@ if len(sys.argv)<2:
     print('Driving log (CSV) is '+driving_log)
 elif len(sys.argv)==2:
     driving_log=sys.argv[1]
+elif len(sys.argv)==3:
+    driving_log=sys.argv[1]
+    nb_epoch=int(sys.argv[2])
 else:
     sys.exit()
 
@@ -47,11 +50,15 @@ model.add(Dense(64, activation='relu'))
 model.add(Dropout(0.5))
 # model.add(Dense(1, activation='tanh'))
 model.add(Dense(1, activation=None))
+model.compile(loss='mse', optimizer=Adam(lr=0.00005))
 
-model.compile(loss='mse', optimizer=Adam(lr=0.0001))
+# Number of epochs
+if not 'nb_epoch' in locals(): 
+    nb_epoch=100
+print("Beginning fit to model over {} epochs".format(nb_epoch))
 history = model.fit_generator(train_generator, samples_per_epoch= \
                   len(train_samples), validation_data=validation_generator, \
-                  nb_val_samples=len(validation_samples), nb_epoch=50)
+                  nb_val_samples=len(validation_samples), nb_epoch=nb_epoch)
 
 model.save('model.h5')
 pickle.dump(history.history, open('epoch-losses.p', "wb"))
