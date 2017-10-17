@@ -5,7 +5,7 @@ import cv2
 from generator import generator, get_manifest
 from sklearn.model_selection import train_test_split
 from keras.models import Sequential
-from keras.layers import Flatten, Dense, Lambda, Dropout
+from keras.layers import Flatten, Dense, Lambda, Dropout, Cropping2D
 from keras.layers.pooling import MaxPooling2D
 from keras.layers.convolutional import Conv2D
 from keras.optimizers import Adam
@@ -31,13 +31,15 @@ validation_generator = generator(validation_samples, batch_size=32)
 
 # keras neural network
 model = Sequential()
-model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
-model.add(Conv2D(16, 8, 8, subsample=(2,2), border_mode='valid', activation='relu'))
-model.add(MaxPooling2D())
-model.add(Conv2D(32, 4, 4, subsample=(2,2), border_mode='valid', activation='relu'))
-model.add(MaxPooling2D())
-model.add(Conv2D(24, 5, 5, border_mode='valid', activation='relu'))
-model.add(MaxPooling2D())
+model.add(Cropping2D(cropping=((50,10),(0,0)), input_shape=(160,320,3)))
+model.add(Lambda(lambda x: (x / 255.0) - 0.5))
+model.add(Conv2D(24, 8, 8, border_mode='valid', activation='relu'))
+# model.add(MaxPooling2D())
+model.add(Conv2D(48, 4, 4, border_mode='valid', activation='relu'))
+# model.add(MaxPooling2D())
+model.add(Conv2D(64, 5, 5, border_mode='valid', activation='relu'))
+model.add(Conv2D(48, 3, 3, border_mode='valid', activation='relu'))
+model.add(Conv2D(48, 3, 3, border_mode='valid', activation='relu'))
 model.add(Flatten())
 model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
