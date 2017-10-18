@@ -122,9 +122,11 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 | MSE | Mean squared error |
  
 
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+Here, I show the result of the training and validation losses.
 
-![alt text][image1]
+![alt text][examples/lossplots.png]
+
+It looks like the number of parameters is adequate and it's currently not overfitting, as the two losses converge to the same point.
 
 #### 3. Creation of the Training Set & Training Process
 
