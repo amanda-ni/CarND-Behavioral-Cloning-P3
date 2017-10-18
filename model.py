@@ -34,9 +34,9 @@ validation_generator = generator(validation_samples, batch_size=32)
 
 # keras neural network
 model = Sequential()
-# model.add(Cropping2D(cropping=((50,10),(0,0)), input_shape=(160,320,3)))
-# model.add(Lambda(lambda x: (x / 255.0) - 0.5))
-model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
+model.add(Cropping2D(cropping=((50,10),(0,0)), input_shape=(160,320,3)))
+model.add(Lambda(lambda x: (x / 255.0) - 0.5))
+# model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
 model.add(Conv2D(24, 8, 8, border_mode='valid', activation='relu'))
 model.add(MaxPooling2D())
 model.add(Conv2D(48, 4, 4, border_mode='valid', activation='relu'))
