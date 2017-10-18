@@ -19,6 +19,7 @@ The goals / steps of this project are the following:
 [image5]: ./examples/placeholder_small.png "Recovery Image"
 [image6]: ./examples/placeholder_small.png "Normal Image"
 [image7]: ./examples/placeholder_small.png "Flipped Image"
+[lossplots]: ./examples/lossplots.png "Losses"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -124,7 +125,7 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 
 Here, I show the result of the training and validation losses.
 
-![alt text][examples/lossplots.png]
+![alt text][lossplots]
 
 It looks like the number of parameters is adequate and it's currently not overfitting, as the two losses converge to the same point.
 
