@@ -65,8 +65,10 @@ def telemetry(sid, data):
 
         throttle = controller.update(float(speed))
         # Don't be a pansy. Why brake when you can just let off the gas?
+        '''
         if float(throttle) < 0.0:
             throttle = 0.0
+        '''
 
         print(steering_angle, throttle)
         send_control(steering_angle, throttle)
