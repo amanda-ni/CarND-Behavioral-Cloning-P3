@@ -3,6 +3,12 @@ import csv
 import numpy as np
 import sklearn
 
+import sys
+import os.path
+def check_file(filename):
+    if not os.path.isfile(filename):
+        print("ERROR: File {} does not exist.".format(filename))
+        sys.exit(0)
 
 # Get the manifest of image filenames
 def get_manifest(filename):
@@ -18,6 +24,7 @@ def get_manifest(filename):
     with open(filename) as csvfile:
         reader = csv.reader(csvfile)
         for line in reader:
+            check_file(line)
             samples.append(line)
     # Omit the first line as it has no data
     return samples[1:]
