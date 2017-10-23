@@ -6,7 +6,7 @@ import sklearn
 import sys
 import os.path
 def check_file(filename):
-    if not os.path.isfile(filename):
+    if not os.path.isfile(filename[0]):
         print("ERROR: File {} does not exist.".format(filename))
         sys.exit(0)
 
