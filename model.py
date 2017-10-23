@@ -26,7 +26,7 @@ if len(sys.argv)>=3:
 if len(sys.argv)>=4:
     print("Model loading from {}".format(sys.argv[3]))
     model_load=sys.argv[3]
-else:
+if len(sys.argv)>4:
     sys.exit()
 
 # read the data and file manifest from csv log
