@@ -9,18 +9,23 @@ from keras.layers import Flatten, Dense, Lambda, Dropout, Cropping2D
 from keras.layers.pooling import MaxPooling2D
 from keras.layers.convolutional import Conv2D
 from keras.optimizers import Adam
+from keras.models import load_model
 import sys
 import pickle
 
 # parse arguments
+model_load = None
+driving_log='./data/collections_log.csv'
+
 if len(sys.argv)<2:
-    driving_log='./data/collections_log.csv'
     print('Driving log (CSV) is '+driving_log)
-elif len(sys.argv)==2:
+if len(sys.argv)>=2:
     driving_log=sys.argv[1]
-elif len(sys.argv)==3:
-    driving_log=sys.argv[1]
+if len(sys.argv)>=3:
     nb_epoch=int(sys.argv[2])
+if len(sys.argv)>=4:
+    print("Model loading from {}".format(sys.argv[3]))
+    model_load=sys.argv[3]
 else:
     sys.exit()
 
@@ -57,6 +62,9 @@ model.add(Dense(1, activation=None))
 model.compile(loss='mse', optimizer=Adam(lr=0.0001))
 
 # Number of epochs
+if model_load: 
+    model = load_model(model_load)
+    print("Model loaded from {}".format(model_load))
 if not 'nb_epoch' in locals(): 
     nb_epoch=100
 print("Beginning fit to model over {} epochs".format(nb_epoch))
