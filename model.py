@@ -54,7 +54,7 @@ model.add(Dense(64, activation='relu'))
 model.add(Dropout(0.5))
 # model.add(Dense(1, activation='tanh'))
 model.add(Dense(1, activation=None))
-model.compile(loss='mse', optimizer=Adam(lr=0.0001))
+model.compile(loss='mse', optimizer=Adam(lr=0.001))
 
 # Number of epochs
 if not 'nb_epoch' in locals(): 
