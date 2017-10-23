@@ -14,7 +14,7 @@ import pickle
 
 # parse arguments
 if len(sys.argv)<2:
-    driving_log='./data/combo-log.csv'
+    driving_log='./data/collections_log.csv'
     print('Driving log (CSV) is '+driving_log)
 elif len(sys.argv)==2:
     driving_log=sys.argv[1]
