@@ -85,7 +85,7 @@ def generator(samples, batch_size=32):
             images = []
             angles = []
             for batch_sample in batch_samples:
-                image, angle = random_augment(batch_sample)
+                image, angle = random_augment(batch_sample, flip_prob=0.2)
                 images.append(image)
                 angles.append(angle)
 
