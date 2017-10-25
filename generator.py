@@ -66,7 +66,7 @@ def random_augment(batch_sample, flip_prob=0.5, lcr_prob=None):
     return image, angle
 
 # Generator to feed the neural network
-def generator(samples, batch_size=32):
+def generator(samples, batch_size=32, flip_prob=0.15, lcr_prob=None):
     '''
     To avoid having to load in all the images, I created a
     generator as taught in class.
@@ -85,7 +85,7 @@ def generator(samples, batch_size=32):
             images = []
             angles = []
             for batch_sample in batch_samples:
-                image, angle = random_augment(batch_sample, flip_prob=0.2)
+                image, angle = random_augment(batch_sample, flip_prob=flip_prob, lcr_prob=lcr_prob)
                 images.append(image)
                 angles.append(angle)
 
