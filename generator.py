@@ -2,6 +2,7 @@ import cv2
 import csv
 import numpy as np
 import sklearn
+import keras
 
 import sys
 import os.path
@@ -94,3 +95,10 @@ def generator(samples, batch_size=32, flip_prob=0.15, lcr_prob=None):
             y_train = np.array(angles)
             yield sklearn.utils.shuffle(X_train, y_train)
 
+# Loss history callback
+class LossHistory(keras.callbacks.Callback):
+    def on_train_begin(self, logs={}):
+        self.losses = []
+
+    def on_batch_end(self, batch, logs={}):
+        self.losses.append(logs.get('loss'))

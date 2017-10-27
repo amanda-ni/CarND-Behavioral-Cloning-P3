@@ -2,7 +2,7 @@ import numpy as np
 import os
 import csv
 import cv2
-from generator import generator, get_manifest
+from generator import generator, get_manifest, LossHistory
 from sklearn.model_selection import train_test_split
 from keras.models import Sequential
 from keras.layers import Flatten, Dense, Lambda, Dropout, Cropping2D
@@ -10,6 +10,7 @@ from keras.layers.pooling import MaxPooling2D
 from keras.layers.convolutional import Conv2D
 from keras.optimizers import Adam
 from keras.models import load_model
+from keras.callbacks import ModelCheckpoint
 import sys
 import pickle
 
@@ -60,17 +61,22 @@ model.add(Dense(64, activation='relu'))
 model.add(Dropout(0.5))
 # model.add(Dense(1, activation='tanh'))
 model.add(Dense(1, activation=None))
-model.compile(loss='mse', optimizer=Adam(lr=0.00001))
+model.compile(loss='mse', optimizer=Adam(lr=0.001))
 
-# Number of epochs
+# Callbacks
+checkpoint = ModelCheckpoint('model.ckpt.h5', verbose=1, save_best_only=True)
+history = LossHistory()
+callbacks = [checkpoint, history]
+
+# Number of epochsa
 if model_load: 
     model = load_model(model_load)
     print("Model loaded from {}".format(model_load))
 if not 'nb_epoch' in locals(): 
     nb_epoch=100
 print("Beginning fit to model over {} epochs".format(nb_epoch))
-history = model.fit_generator(train_generator, samples_per_epoch= \
-                  len(train_samples), validation_data=validation_generator, \
+history = model.fit_generator(train_generator, samples_per_epoch=len(train_samples), \
+                  callbacks=callbacks, validation_data=validation_generator, \
                   nb_val_samples=len(validation_samples), nb_epoch=nb_epoch)
 
 model.save('model.h5')
