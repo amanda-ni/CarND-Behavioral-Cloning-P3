@@ -65,9 +65,35 @@ The model contains dropout layers in order to reduce overfitting (model.py lines
 
 The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
-#### 3. Model parameter tuning
+Among the issues that I found to be particularly difficult to remedy was if I trained to completion. My neural network just had too many parameters. For that reason, I ensured that I stopped early, where the earliest checkpoint was actually a single epoch.
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+#### 3. Model validation curves
+
+The model used an adam optimizer, so the learning rate was set to 0.01 (model.py line 64).
+
+In the Keras modeling effort, and so I needed to implement checkpointing with callbacks. 
+
+```
+from keras.callbacks import ModelCheckpoint
+
+checkpoint = ModelCheckpoint('model.ckpt.h5', verbose=1, save_best_only=True)
+```
+
+Additionally, in order to produce training/validation plots on a per batch basis below, I required an additional callback. Here, I show the result of the training and validation losses. 
+
+![alt text][lossplots]
+
+This was done by defining `LossHistory` as a callback.
+
+```
+# Loss history callback
+class LossHistory(keras.callbacks.Callback):
+    def on_train_begin(self, logs={}):
+        self.losses = []
+
+    def on_batch_end(self, batch, logs={}):
+        self.losses.append(logs.get('loss'))
+```
 
 #### 4. Appropriate training data
 
@@ -122,10 +148,6 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 | Tanh			| Nonlinearity between -1 and 1 |
 | MSE | Mean squared error |
  
-
-Here, I show the result of the training and validation losses.
-
-![alt text][lossplots]
 
 It looks like the number of parameters is adequate and it's currently not overfitting, as the two losses converge to the same point.
 
