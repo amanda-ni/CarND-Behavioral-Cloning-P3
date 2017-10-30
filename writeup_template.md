@@ -122,7 +122,7 @@ My first step was to use a convolution neural network model similar to LeNet tha
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
-To combat the overfitting, I modified the model so that additional ReLU's were inputted, and then I added Dropout at all different levels. Then, because the model was still very complex, I did a lot of early stopping (2-3 epochs), which ultimately provided the best results.
+To combat the overfitting, I modified the model so that additional ReLU's were inputted, and then I added Dropout at all different levels. Then, because the model was still very complex, I did a lot of early stopping (2-3 epochs). When I got a lot more data, then the early stopping was done later on. Interestingly, the car still drove off the road even with more data from run to run, which was puzzling to me. It just so happened that at times the final model didn't work, but the early stopped model *did*.
 
 For optimization, I used the Adam optimizer. Originally, since I thought that the steering angle was bounded by [-1, 1], I attached a `tanh` function but that turned out not to work out so well, since I required more minute steering values.
 
@@ -180,6 +180,11 @@ To augment the data sat, I also flipped images and angles thinking that this wou
 ![alt text][image6]
 ![alt text][image7]
 
-After the collection process, I had 24k number of data points from the original "sample" collection, and additional 44k samples from my own collection. I then preprocessed this data by mean-shifting and variance normalizing the image.
+After the collection process, I had 8k data points from the original "sample" collection, and additional 25k samples from my own collection for a total of 33k data samples. In Keras, this data was cropped, mean-shifted, and variance normalized during training and test time, using the `Lambda` function:
 
-I finally randomly shuffled the data set and put 20% of the data into a validation set, while training on the remaining 80% of the data. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+```
+model.add(Cropping2D(cropping=((60,20),(0,0)), input_shape=(160,320,3)))
+model.add(Lambda(lambda x: (x / 127.5) - 0.5))
+```
+
+I finally randomly shuffled the data set and put 20% of the data into a validation set, while training on the remaining 80% of the data. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 34 as evidenced by my curves previously plotted. I used an Adam optimizer so that manually training the learning rate wasn't necessary.
