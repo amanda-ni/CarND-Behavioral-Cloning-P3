@@ -7,18 +7,20 @@ The goals / steps of this project are the following:
 2. Build, a convolution neural network in Keras that predicts steering angles from images
 3. Train and validate the model with a training and validation set
 4. Test that the model successfully drives around track one without leaving the road
+  * This model is stored in [model.h5](model.h5).
+  * The video of this model at work is in this [movie](drive.mp4).
 5. Summarize the results with a written report
 
 
 [//]: # (Image References)
 
 [image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[image2]: ./examples/center-driving.gif "Center Image"
+[image3]: ./examples/center.jpg "Recovery Image"
+[image4]: ./examples/left.jpg "Recovery Image"
+[image5]: ./examples/right.jpg "Recovery Image"
+[image6]: ./examples/unflipped-im.jpg "Normal Image"
+[image7]: ./examples/flipped-im.jpg "Flipped Image"
 [lossplots]: ./examples/lossplots.png "Losses"
 
 ## Rubric Points
@@ -32,12 +34,13 @@ The goals / steps of this project are the following:
 My project includes the following files:
 
 * generator.py containing the ingestion of data. This assumes:
-   * the metadata and labels are stored in a comma separated file `filename.csv`,
+   * the metadata and labels are stored in a comma separated file `collections_log.csv`, the collection of all the driving logs for each individual run,
    * the CSV file has labels and the paths to the images,
    * iterators to be passed to the training module
-* model.py containing the script to create and train the model
-* drive.py for driving the car in autonomous mode
+* [model.py](model.py) containing the script to create and train the model
+* [drive.py](drive.py) for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
+* [drive.mp4](drive.mp4) for a video of the successful driving log
 * writeup_report.md or writeup_report.pdf summarizing the results
 
 #### 2. Submission includes functional code
@@ -107,21 +110,19 @@ For details about how I created the training data, see the next section.
 
 #### 1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
+The overall strategy for deriving a model architecture was to research an acceptable MSE-based optimizing deep learning architecture. I looked online for various architectures. In actuality, I wanted to come up with something on my own, though, which I did and is described below.
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+My first step was to use a convolution neural network model similar to LeNet that I'd previously ran. I thought this model might be appropriate because it offered a considerable amount of complexity. In reality, it seemed as though I'm predicted a single number (whereas LeNet had an output dimensionality of ten), and I'm doing more of a wholistic "classification".
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
-To combat the overfitting, I modified the model so that ...
+To combat the overfitting, I modified the model so that additional ReLU's were inputted, and then I added Dropout at all different levels. Then, because the model was still very complex, I did a lot of early stopping (2-3 epochs), which ultimately provided the best results.
 
-Then I ... 
+For optimization, I used the Adam optimizer. Originally, since I thought that the steering angle was bounded by [-1, 1], I attached a `tanh` function but that turned out not to work out so well, since I required more minute steering values.
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
+The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track. To improve the driving behavior in these cases, I collected more data around those areas. That didn't seem to help that much, but I figured the extra data wouldn't hurt. 
 
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
-
-Adam optizer, but with a lower learning rate, since I put a nonlinearity of a `tanh`.
+I did end up cutting down the number of data points in which we were driving straight, since those were relatively boring in terms of learning criteria. At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
 #### 2. Final Model Architecture
 
@@ -131,17 +132,20 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 160x320x3 RGB image | 
 | Convolution 8x8     	| 4x4 stride, valid padding, 8 output maps |
+| Dropout		|		Rate=0.5			|
 | RELU					|						|
 | Max pooling	      	| 2x2 stride |
 | Convolution 4x4	    | 4x4 stride, valid padding, 8 output maps    |
+| Dropout		|		Rate=0.5			|
 | RELU					|						|
 | Max pooling	      	| 2x2 stride |
 | Convolution 5x5	    | 1x1 stride, valid padding, 6 output maps    |
+| Dropout		|		Rate=0.5			|
 | RELU					|						|
 | Max pooling	      	| 2x2 stride |
 | Fully connected		|  Outputs 128 flat neurons|
+| Dropout		|		Rate=0.5			|
 | RELU					|						|
-| Dropout					|	Rate at 0.5 |
 | Fully connected		|  Outputs 64 flat neurons|
 | RELU					|						|
 | Fully connected		|  Outputs 1 flat neurons|
@@ -157,7 +161,7 @@ To capture good driving behavior, I first recorded two laps on track one using c
 
 ![alt text][image2]
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to know how to deal with situations in which it needed to recover. These images show what a recovery looks like starting from the right curb:
 
 ![alt text][image3]
 ![alt text][image4]
