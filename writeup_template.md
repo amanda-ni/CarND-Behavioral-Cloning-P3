@@ -57,7 +57,7 @@ The [model.py](model.py) file contains the code for training and saving the conv
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+My model consists of a convolution neural network with filter sizes ranging from 3x3 to 8x8 and depths between 24 and 128 (see [model.py](model.py) lines 42-64). The convolutional depth maps ranged from 24 to 64 while I had fully connected layers with matrix sizes going from 128 down to a vector multiplication for the last angle prediction.
 
 The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). I thought about a `tanh` activation at the end to bound between -1 and 1, but ended up just using a linear activation (doing nothing) with an MSE loss cost function.
 
@@ -78,7 +78,7 @@ Among the issues that I found to be particularly difficult to remedy was if I tr
 
 #### 3. Model validation curves
 
-The model used an Adam optimizer, so the learning rate was set to 0.01 (model.py line 64).
+The model used an Adam optimizer, so the learning rate was set to 0.001 (model.py line 64).
 
 In the Keras modeling effort, and so I needed to implement checkpointing with callbacks. 
 

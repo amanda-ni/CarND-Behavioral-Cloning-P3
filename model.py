@@ -79,5 +79,6 @@ history = model.fit_generator(train_generator, samples_per_epoch=len(train_sampl
                   callbacks=callbacks, validation_data=validation_generator, \
                   nb_val_samples=len(validation_samples), nb_epoch=nb_epoch)
 
+# Save the final model to "model.h5"
 model.save('model.h5')
 pickle.dump(history.history, open('epoch-losses.p', "wb"))
