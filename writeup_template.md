@@ -66,7 +66,7 @@ The model includes RELU layers to introduce nonlinearity (code line 20), and the
 
 The model contains dropout layers in order to reduce overfitting ([model.py](model.py) line 21). 
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting. I used Keras's built in training splits with:
+The model was trained and validated on different data sets to ensure that the model was not overfitting. I used sklearn's training splits with:
 
 ```
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
@@ -137,25 +137,29 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 160x320x3 RGB image | 
-| Convolution 8x8     	| 4x4 stride, valid padding, 8 output maps |
-| Dropout		|		Rate=0.5			|
-| RELU					|						|
-| Max pooling	      	| 2x2 stride |
-| Convolution 4x4	    | 4x4 stride, valid padding, 8 output maps    |
-| Dropout		|		Rate=0.5			|
-| RELU					|						|
-| Max pooling	      	| 2x2 stride |
-| Convolution 5x5	    | 1x1 stride, valid padding, 6 output maps    |
-| Dropout		|		Rate=0.5			|
-| RELU					|						|
-| Max pooling	      	| 2x2 stride |
+| Convolution 8x8     	| valid padding, 24 output maps |
+| RELU						|				   |
+| Dropout					|		Rate=0.5  |
+| Max pooling	      		| 2x2 stride |
+| Convolution 4x4		| valid padding, 48 output maps    |
+| RELU						|					|
+| Dropout					|		Rate=0.5  |
+| Max pooling	      		| 2x2 stride |
+| Convolution 5x5	  	| valid padding, 64 output maps    |
+| RELU						|					|
+| Dropout					|		Rate=0.5  |
+| Max pooling	      		| 2x2 stride |
+| Convolution 3x3	  	| valid padding, 48 output maps    |
+| RELU						|					|
+| Convolution 3x3	  	| valid padding, 48 output maps    |
+| RELU						|					|
 | Fully connected		|  Outputs 128 flat neurons|
-| Dropout		|		Rate=0.5			|
 | RELU					|						|
+| Dropout		|		Rate=0.5			|
 | Fully connected		|  Outputs 64 flat neurons|
 | RELU					|						|
+| Dropout		|		Rate=0.5			|
 | Fully connected		|  Outputs 1 flat neurons|
-| Tanh			| Nonlinearity between -1 and 1 |
 | MSE | Mean squared error |
  
 
